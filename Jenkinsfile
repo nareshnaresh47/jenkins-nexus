@@ -6,15 +6,15 @@ pipeline {
     environment {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "13.250.182.85:8081"
-        NEXUS_REPOSITORY = "java-app"
-        NEXUS_CREDENTIAL_ID = "NEXUS_CRED"
+        NEXUS_URL = "43.204.116.82:8081"
+        NEXUS_REPOSITORY = "maven-nexus-repo"
+        NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
     }
     stages {
         stage("Clone code from GitHub") {
             steps {
                 script {
-                    git branch: 'main', credentialsId: 'githubwithpassword', url: 'https://github.com/devopshint/jenkins-nexus';
+                    git branch: 'main', credentialsId: 'githubwithpassword', url: 'https://github.com/nareshnaresh47/jenkins-nexus.git';
                 }
             }
         }
@@ -36,19 +36,19 @@ pipeline {
                     if(artifactExists) {
                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
                         nexusArtifactUploader(
-                            nexusVersion: 'nexus3',
-                            protocol: 'http',
-                            nexusUrl: '13.250.182.85:8081',
-                            groupId: 'pom.com.mycompany.app',
-                            version: 'pom.1.0-SNAPSHOT' ,
-                            repository: 'maven-nexus-repo',
+                           nexusVersion: NEXUS_VERSION,
+                           protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                             groupId: pom.groupId,
+                            version: pom.version,
+                           repository: NEXUS_REPOSITORY,
                             credentialsId: 'NEXUS_CRED',
                             artifacts: [
-                                [artifactId: 'pom.my-app',
+                                [artifactId: 'pom.artifactId',
                                 classifier: '',
                                 file: artifactPath,
                                 type: pom.packaging],
-                                [artifactId: 'pom.my-app',
+                                [artifactId: 'pom.artifactId',
                                 classifier: '',
                                 file: "pom.xml",
                                 type: "pom"]
