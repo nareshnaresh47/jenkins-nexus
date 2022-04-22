@@ -42,7 +42,7 @@ pipeline {
                              groupId: pom.groupId,
                             version: pom.version,
                            repository: NEXUS_REPOSITORY,
-                            credentialsId: 'NEXUS_CRED',
+                            credentialsId: 'nexus-user-credentials',
                             artifacts: [
                                 [artifactId: 'pom.artifactId',
                                 classifier: '',
